@@ -1,0 +1,66 @@
+{% extends "delivery_navbar.html" %}
+{% block title %}
+Orders
+{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="background-color:#eeeeee">
+	<div class="container" >
+		<div class="row m-0 p-2 pt-3">
+			<div class="col-md-6 col-12 m-auto">
+				<img src="{{url_for('static', filename='delivery.png')}}" width="55%" >
+			</div>
+			<div class="col-md-6 col-12 m-auto">
+				<h1 style="color:#00b1ff">Welcome!!</h1>
+				<p style="font-size: 19px;">
+					If you always put the customer first, success will be yours.				</p>
+
+			</div>
+
+		</div>
+	  
+	</div>
+  </div>
+<br>
+<h2 style="text-align: center;color:#91612F; text-decoration: underline;" class="mt-3">Active Orders</h2>
+<div class="row m-0 p-4  mt-2">
+{% for i in x %}
+<div class="col-md-4 col-12 p-3">
+    <div class="card h-100 m-auto mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Order ID: {{ i[0] }}</h5> <span class="badge bg-success">{{i[1]}}</span></h6> 
+            <p class="card-text m-0">PickUp: {{ i[9] }}</p>
+            <p class="card-text m-0">Drop: {{ i[4] }}</p>
+            <p class="card-text">Payment Mode: {{ i[2] }}</p>
+            <p>Bill Amount: Rs {{ i[3] }}</p>
+            <!-- Button to open modal -->
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#deliveryModal{{ i[0] }}">
+                Delivered
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="deliveryModal{{ i[0] }}" tabindex="-1" aria-labelledby="deliveryModalLabel{{ i[0] }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deliveryModalLabel{{ i[0] }}">Order Delivered?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Has the order been delivered?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <form action="/delivery_worker" method="post" class="form-group">
+                                <input type="hidden" name="itemId" value="{{i[0]}}">
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

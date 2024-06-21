@@ -1,0 +1,70 @@
+{% extends "customer_navbar.html" %}
+{% block title %}
+Quick Serve
+{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid" style="background-color:#eeeeee">
+	<div class="container" >
+		<div class="row m-0 p-2 pt-3">
+			<div class="col-md-6 col-12 m-auto">
+				<img src="{{url_for('static', filename='customer.png')}}" width="80%" >
+			</div>
+			<div class="col-md-6 col-12 m-auto">
+				<h1 style="color:#00b1ff">Welcome to {{x[0][6]}}!!</h1>
+				<p style="font-size: 19px;">
+					One cannot think well, love well, sleep well, if not has not dined well.
+				</p>
+
+			</div>
+
+		</div>
+	  
+	</div>
+  </div>
+<br>
+<h2 style="text-align: center;color:#91612F; text-decoration: underline;" class="mt-3">Food Items</h2>
+<div class="row m-0 p-4 mt-4">
+{% for i in x %}
+<div class="col-md-4 col-12 p-3">
+    <div class="card mb-3 h-100 m-auto">
+        <div class="card-body">
+            <h5 class="card-title">{{ i[1] }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Price: Rs {{ i[2] }}</h6>
+            {% if i[4] %}
+                <p class="card-text" style="color: #006400;">Veg</p>
+            {% else %}
+                <p class="card-text" style="color: red;">Non Veg</p>
+            {% endif %}
+			<form action="/customer/food?button=cart" method="post" class="form-group">
+				<label for="quantity">Quantity:</label>
+				<input type="number" id="quantity" name="quantity" class="form-control" min="1" max={{i[3]}} onkeydown="return false">
+				<input type="hidden" name="itemId" value="{{i[0]}}">
+				<button type="submit" class="btn btn-primary">Add to cart</button>
+			</form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="container mt-5 mb-3">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Mode of Payment section -->
+            <form action="/customer/food/orderplaced" method="post">
+                <h2>Mode of Payment</h2>
+                <div class="form-check">
+                    <input type="radio" id="cod" name="payment_mode" value="Cash On Delivery" class="form-check-input" checked>
+                    <label for="cod" class="form-check-label">Cash On Delivery</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="upi" name="payment_mode" value="UPI" class="form-check-input">
+                    <label for="upi" class="form-check-label">UPI</label>
+                </div>
+                <!-- Place Order button -->
+                <div class="text-left mt-3">
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
